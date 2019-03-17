@@ -17,7 +17,7 @@ NGRX: Store + Effects app
 [Setup and install](#setup-and-install) | [Tasks](#tasks) |
 [Resources](#resources)
 
-## Setup and install
+## Setup and Install
 
 Fork this repo from inside GitHub so you can commit directly to your account, or
 simply download the `.zip` bundle with the contents inside.
