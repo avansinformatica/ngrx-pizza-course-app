@@ -14,7 +14,7 @@ import { Topping } from '../../models/topping.model'
         <div class="product-item">
             <pizza-form
                 [pizza]="pizza$ | async"
-                [toppings]="toppings"
+                [toppings]="toppings$ | async"
                 (selected)="onSelect($event)"
                 (create)="onCreate($event)"
                 (update)="onUpdate($event)"
@@ -27,12 +27,14 @@ import { Topping } from '../../models/topping.model'
 })
 export class ProductItemComponent implements OnInit {
     pizza$: Observable<Pizza>
+    toppings$: Observable<Topping[]>
     visualise: Pizza
-    toppings: Topping[]
 
     constructor(private store: Store<fromStore.ProductsState>) {}
 
     ngOnInit() {
+        this.store.dispatch(new fromStore.LoadToppings())
+        this.toppings$ = this.store.select(fromStore.getAllToppings)
         this.pizza$ = this.store.select(fromStore.getSelectedPizza)
     }
 
