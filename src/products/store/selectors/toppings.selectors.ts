@@ -22,12 +22,9 @@ export const getToppingsEntities = createSelector(
 )
 
 // Get a selected topping based on toppingId from the route
-export const getSelectedTopping = createSelector(
-    getToppingsEntities,
-    fromRoot.getRouterState,
-    (entities, router): Topping => {
-        return router.state && entities[router.state.params.toppingId]
-    }
+export const getSelectedToppings = createSelector(
+    getToppingState,
+    fromToppings.getSelectedToppings
 )
 
 export const getAllToppings = createSelector(

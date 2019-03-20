@@ -52,7 +52,11 @@ export const ROUTES: Routes = [
         // Conditional import! Production does not use the in-memory web api.
         environment.production
             ? []
-            : HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService),
+            : HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+                  dataEncapsulation: false,
+                  passThruUnknownUrl: true,
+                  put204: false, // return entity after PUT/update
+              }),
 
         RouterModule.forChild(ROUTES),
         // Lazyload all store parts

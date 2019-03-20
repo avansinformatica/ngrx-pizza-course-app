@@ -7,6 +7,11 @@ import { of } from 'rxjs'
 
 @Injectable()
 export class PizzaEffects {
+    constructor(
+        private actions$: Actions,
+        private pizzaService: fromServices.PizzasService
+    ) {}
+
     @Effect()
     loadPizzas$ = this.actions$.pipe(
         ofType(pizzaActions.LOAD_PIZZAS),
@@ -18,8 +23,44 @@ export class PizzaEffects {
         )
     )
 
-    constructor(
-        private actions$: Actions,
-        private pizzaService: fromServices.PizzasService
-    ) {}
+    @Effect()
+    createPizza$ = this.actions$.pipe(
+        ofType(pizzaActions.CREATE_PIZZA),
+        map((action: pizzaActions.CreatePizza) => action.payload),
+        switchMap(fromPayload =>
+            this.pizzaService.createPizza(fromPayload).pipe(
+                map(pizza => new pizzaActions.CreatePizzaSuccess(pizza)),
+                catchError(error => of(new pizzaActions.LoadPizzasFail(error)))
+            )
+        )
+    )
+
+    @Effect()
+    updatePizza$ = this.actions$.pipe(
+        ofType(pizzaActions.UPDATE_PIZZA),
+        map((action: pizzaActions.UpdatePizza) => action.payload),
+        switchMap(fromPayload =>
+            this.pizzaService.updatePizza(fromPayload).pipe(
+                map(pizza => new pizzaActions.UpdatePizzaSuccess(pizza)),
+                catchError(error => of(new pizzaActions.UpdatePizzaFail(error)))
+            )
+        )
+        // switchMap(fromPayload => this.pizzaService.updatePizza(fromPayload)),
+        // map(pizza => new pizzaActions.UpdatePizzaSuccess(pizza)),
+        // catchError(error => of(new pizzaActions.UpdatePizzaFail(error)))
+    )
+
+    @Effect()
+    deletePizza$ = this.actions$.pipe(
+        ofType(pizzaActions.DELETE_PIZZA),
+        map((action: pizzaActions.DeletePizza) => action.payload),
+        switchMap(pizza =>
+            this.pizzaService.removePizza(pizza).pipe(
+                // pizzaService.remove returns nothing, so we return
+                // the deleted pizza ourselves on success
+                map(() => new pizzaActions.UpdatePizzaSuccess(pizza)),
+                catchError(error => of(new pizzaActions.UpdatePizzaFail(error)))
+            )
+        )
+    )
 }

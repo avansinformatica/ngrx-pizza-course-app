@@ -69,6 +69,34 @@ export function reducer(
                 loaded: false,
             }
         }
+
+        case fromPizzas.CREATE_PIZZA_SUCCESS:
+        case fromPizzas.UPDATE_PIZZA_SUCCESS: {
+            console.log(action.type)
+            const pizza = action.payload
+            const entities = {
+                ...state.entities,
+                [pizza.id]: pizza,
+            }
+            return {
+                ...state,
+                entities,
+            }
+        }
+
+        case fromPizzas.DELETE_PIZZA_SUCCESS: {
+            const pizza = action.payload
+            // destructure the pizza from the state object
+            // select the pizza by id and name that 'removed'
+            // the remainder are the enteties, without the removed.
+            // ES6 destructuring syntax!
+            const { [pizza.id]: removed, ...entities } = state.entities
+
+            return {
+                ...state,
+                entities,
+            }
+        }
     }
     return state
 }
