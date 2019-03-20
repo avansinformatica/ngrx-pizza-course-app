@@ -36,6 +36,7 @@ export const ROUTES: Routes = [
         path: 'products',
         loadChildren: '../products/products.module#ProductsModule',
     },
+    { path: '**', redirectTo: 'products' },
 ]
 
 @NgModule({

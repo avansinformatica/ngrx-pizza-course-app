@@ -10,6 +10,7 @@ import { tap } from 'rxjs/operators'
 
 @Component({
     selector: 'product-item',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['product-item.component.scss'],
     template: `
         <div class="product-item">
@@ -52,6 +53,7 @@ export class ProductItemComponent implements OnInit {
     }
 
     onCreate(event: Pizza) {
+        console.log('createPizza')
         this.store.dispatch(new fromStore.CreatePizza(event))
     }
 

@@ -22,6 +22,7 @@ import { Topping } from '../../models/topping.model'
 
 @Component({
     selector: 'pizza-form',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['pizza-form.component.scss'],
     template: `
         <div class="pizza-form">
@@ -125,6 +126,7 @@ export class PizzaFormComponent implements OnChanges {
     }
 
     createPizza(form: FormGroup) {
+        console.log('createPizza')
         const { value, valid } = form
         if (valid) {
             this.create.emit(value)
